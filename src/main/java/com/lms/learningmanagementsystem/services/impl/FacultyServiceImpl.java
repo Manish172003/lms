@@ -6,8 +6,11 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.lms.learningmanagementsystem.dtos.CourseResponse;
 import com.lms.learningmanagementsystem.dtos.FacultyRequest;
 import com.lms.learningmanagementsystem.dtos.FacultyResponse;
+import com.lms.learningmanagementsystem.dtos.SectionResponse;
+import com.lms.learningmanagementsystem.entities.Course;
 import com.lms.learningmanagementsystem.entities.Faculty;
 import com.lms.learningmanagementsystem.exception.ResourceNotFoundException;
 import com.lms.learningmanagementsystem.repositories.FacultyRepository;
@@ -48,7 +51,6 @@ public class FacultyServiceImpl implements FacultyService {
 
         faculty.setName(request.getName());
         faculty.setEmail(request.getEmail());
-        faculty.setEmployeeId(request.getEmployeeId());
         faculty.setDepartment(request.getDepartment());
         faculty.setDesignation(request.getDesignation());
         faculty.setSpecialization(request.getSpecialization());
@@ -64,29 +66,74 @@ public class FacultyServiceImpl implements FacultyService {
         facultyRepository.delete(faculty);
     }
 
-    // 🔹 Mapper functions
+
     private Faculty mapToEntity(FacultyRequest request) {
         return new Faculty(
-                null, // assuming id is auto-generated, set null
                 request.getName(),
                 request.getEmail(),
-                request.getEmployeeId(),
                 request.getDepartment(),
                 request.getDesignation(),
                 request.getSpecialization()
         );
     }
+    
+    private CourseResponse mapToResponse(Course course) {
+        CourseResponse response = new CourseResponse();
+        response.setId(course.getId());
+        response.setCode(course.getCode());
+        response.setName(course.getName());
+        response.setDescription(course.getDescription());
+
+        if (course.getSections() != null) {
+            List<SectionResponse> sectionResponses = course.getSections().stream().map(section -> {
+                SectionResponse sr = new SectionResponse();
+                sr.setId(section.getId());
+                sr.setSectionName(section.getSectionName());
+                sr.setCapacity(section.getCapacity());
+                if (section.getFaculty() != null) {
+                    sr.setFacultyId(section.getFaculty().getEmployeeId());
+                    sr.setFacultyName(section.getFaculty().getName());
+                }
+                return sr;
+            }).collect(Collectors.toList());
+
+            response.setSections(sectionResponses);
+        }
+
+        return response;
+    }
 
     private FacultyResponse mapToResponse(Faculty faculty) {
-        return new FacultyResponse(
-                faculty.getId(),
-                faculty.getName(),
-                faculty.getEmail(),
-                faculty.getEmployeeId(),
-                faculty.getDepartment(),
-                faculty.getDesignation(),
-                faculty.getSpecialization()
-        );
+       FacultyResponse response = new FacultyResponse();
+       response.setDepartment(faculty.getDepartment());
+       response.setDesignation(faculty.getDesignation());
+       response.setEmail(faculty.getEmail());
+       response.setName(faculty.getName());
+       response.setSpecialization(faculty.getSpecialization());
+       response.setEmployeeId(faculty.getEmployeeId());
+       
+       if (faculty.getSections() != null) {
+           List<SectionResponse> sectionResponses = faculty.getSections().stream().map(section -> {
+               SectionResponse sr = new SectionResponse();
+               sr.setId(section.getId());
+               sr.setSectionName(section.getSectionName());
+               sr.setCapacity(section.getCapacity());
+               if (section.getFaculty() != null) {
+                   sr.setFacultyId(section.getFaculty().getEmployeeId());
+                   sr.setFacultyName(section.getFaculty().getName());
+               }
+               if (section.getCourse() != null) {
+                   sr.setFacultyId(section.getCourse().getId());
+                   sr.setFacultyName(section.getCourse().getName());
+               }
+               return sr;
+           }).collect(Collectors.toList());
+
+           response.setSections(sectionResponses);
+       }
+       
+       return response;
+       
     }
 
 }

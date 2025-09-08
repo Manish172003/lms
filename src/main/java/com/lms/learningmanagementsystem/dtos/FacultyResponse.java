@@ -1,21 +1,33 @@
 package com.lms.learningmanagementsystem.dtos;
 
+import java.util.List;
+import java.util.ArrayList;
 public class FacultyResponse {
-	private Long id;
+	
 	private String name;
 	private String email;
-	private String employeeId;
+	public List<SectionResponse> getSections() {
+		return sectionResponse;
+	}
+
+	public void setSections(List<SectionResponse> sectionResponse) {
+		this.sectionResponse = sectionResponse;
+	}
+
+	private Long employeeId;
 	private String department;
 	private String designation;
 	private String specialization;
+	private List<SectionResponse> sectionResponse = new ArrayList<>();
+	
+	
 
 	public FacultyResponse() {
 	}
 
-	public FacultyResponse(Long id, String name, String email, String employeeId, String department, String designation,
+	public FacultyResponse(Long employeeId, String name, String email,  String department, String designation,
 			String specialization) {
 		super();
-		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.employeeId = employeeId;
@@ -24,13 +36,8 @@ public class FacultyResponse {
 		this.specialization = specialization;
 	}
 
-	public Long getId() {
-		return id;
-	}
+	
 
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public String getName() {
 		return name;
@@ -48,11 +55,11 @@ public class FacultyResponse {
 		this.email = email;
 	}
 
-	public String getEmployeeId() {
+	public Long getEmployeeId() {
 		return employeeId;
 	}
 
-	public void setEmployeeId(String employeeId) {
+	public void setEmployeeId(Long employeeId) {
 		this.employeeId = employeeId;
 	}
 

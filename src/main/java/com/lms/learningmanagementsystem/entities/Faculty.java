@@ -1,32 +1,45 @@
 package com.lms.learningmanagementsystem.entities;
 
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Faculty {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-
+	private Long employeeId;
 	private String name;
 	private String email;
-	private String employeeId;
 	private String department;
 	private String designation;
 	private String specialization;
+	
+	@OneToMany(mappedBy = "faculty", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Section> sections;
+
+	public List<Section> getSections() {
+		return sections;
+	}
+
+	public void setSections(List<Section> sections) {
+		this.sections = sections;
+	}
 
 	public Faculty() {
 
 	}
 
-	public Faculty(Long id, String name, String email, String employeeId, String department, String designation,
+	public Faculty(long employeeId,String name, String email, String department, String designation,
 			String specialization) {
 		super();
-		this.id = id;
+		
 		this.name = name;
 		this.email = email;
 		this.employeeId = employeeId;
@@ -34,14 +47,19 @@ public class Faculty {
 		this.designation = designation;
 		this.specialization = specialization;
 	}
-
-	public Long getId() {
-		return id;
+	
+	public Faculty(String name, String email, String department, String designation,
+			String specialization) {
+		super();
+		
+		this.name = name;
+		this.email = email;
+		this.department = department;
+		this.designation = designation;
+		this.specialization = specialization;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+	
 
 	public String getName() {
 		return name;
@@ -59,11 +77,11 @@ public class Faculty {
 		this.email = email;
 	}
 
-	public String getEmployeeId() {
+	public Long getEmployeeId() {
 		return employeeId;
 	}
 
-	public void setEmployeeId(String employeeId) {
+	public void setEmployeeId(Long employeeId) {
 		this.employeeId = employeeId;
 	}
 

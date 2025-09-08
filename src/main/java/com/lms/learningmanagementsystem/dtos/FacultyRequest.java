@@ -11,12 +11,11 @@ public class FacultyRequest {
 	public FacultyRequest() {
 	}
 
-	public FacultyRequest(String name, String email, String employeeId, String department, String designation,
+	public FacultyRequest(String name, String email,String department, String designation,
 			String specialization) {
 		super();
 		this.name = name;
-		this.email = email;
-		this.employeeId = employeeId;
+		this.email = email;	
 		this.department = department;
 		this.designation = designation;
 		this.specialization = specialization;
