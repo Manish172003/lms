@@ -14,6 +14,7 @@ import com.lms.learningmanagementsystem.entities.Course;
 import com.lms.learningmanagementsystem.entities.Faculty;
 import com.lms.learningmanagementsystem.exception.ResourceNotFoundException;
 import com.lms.learningmanagementsystem.repositories.FacultyRepository;
+import com.lms.learningmanagementsystem.repositories.SectionRepository;
 import com.lms.learningmanagementsystem.services.FacultyService;
 
 @Service
@@ -21,6 +22,9 @@ public class FacultyServiceImpl implements FacultyService {
 
 	@Autowired
     private FacultyRepository facultyRepository;
+	
+	@Autowired
+    private SectionRepository sectionRepository;
 
     @Override
     public FacultyResponse createFaculty(FacultyRequest request) {
@@ -77,32 +81,7 @@ public class FacultyServiceImpl implements FacultyService {
         );
     }
     
-    private CourseResponse mapToResponse(Course course) {
-        CourseResponse response = new CourseResponse();
-        response.setId(course.getId());
-        response.setCode(course.getCode());
-        response.setName(course.getName());
-        response.setDescription(course.getDescription());
-
-        if (course.getSections() != null) {
-            List<SectionResponse> sectionResponses = course.getSections().stream().map(section -> {
-                SectionResponse sr = new SectionResponse();
-                sr.setId(section.getId());
-                sr.setSectionName(section.getSectionName());
-                sr.setCapacity(section.getCapacity());
-                if (section.getFaculty() != null) {
-                    sr.setFacultyId(section.getFaculty().getEmployeeId());
-                    sr.setFacultyName(section.getFaculty().getName());
-                }
-                return sr;
-            }).collect(Collectors.toList());
-
-            response.setSections(sectionResponses);
-        }
-
-        return response;
-    }
-
+    
     private FacultyResponse mapToResponse(Faculty faculty) {
        FacultyResponse response = new FacultyResponse();
        response.setDepartment(faculty.getDepartment());
@@ -110,7 +89,7 @@ public class FacultyServiceImpl implements FacultyService {
        response.setEmail(faculty.getEmail());
        response.setName(faculty.getName());
        response.setSpecialization(faculty.getSpecialization());
-       response.setEmployeeId(faculty.getEmployeeId());
+       response.setEmployeeId(faculty.getFacultyId());
        
        if (faculty.getSections() != null) {
            List<SectionResponse> sectionResponses = faculty.getSections().stream().map(section -> {
@@ -119,12 +98,13 @@ public class FacultyServiceImpl implements FacultyService {
                sr.setSectionName(section.getSectionName());
                sr.setCapacity(section.getCapacity());
                if (section.getFaculty() != null) {
-                   sr.setFacultyId(section.getFaculty().getEmployeeId());
+                   sr.setFacultyId(section.getFaculty().getFacultyId());
                    sr.setFacultyName(section.getFaculty().getName());
                }
                if (section.getCourse() != null) {
-                   sr.setFacultyId(section.getCourse().getId());
-                   sr.setFacultyName(section.getCourse().getName());
+    	   
+                   sr.setCourseId(section.getCourse().getId());
+                   sr.setCourseName(section.getCourse().getName());
                }
                return sr;
            }).collect(Collectors.toList());

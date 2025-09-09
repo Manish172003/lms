@@ -7,19 +7,36 @@ public class AssignmentRequest {
 	private String description;
 	private LocalDate dueDate;
 	private Long sectionId;
+	private Long facultyId;
 
 	public AssignmentRequest() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	public AssignmentRequest(String title, String description, LocalDate dueDate, Long sectionId) {
+
+
+	public AssignmentRequest(String title, String description, LocalDate dueDate, Long sectionId, Long facultyId) {
 		super();
 		this.title = title;
 		this.description = description;
 		this.dueDate = dueDate;
 		this.sectionId = sectionId;
+		this.facultyId = facultyId;
 	}
+
+
+
+	public Long getFacultyId() {
+		return facultyId;
+	}
+
+
+
+	public void setFacultyId(Long facultyId) {
+		this.facultyId = facultyId;
+	}
+
+
 
 	public String getTitle() {
 		return title;

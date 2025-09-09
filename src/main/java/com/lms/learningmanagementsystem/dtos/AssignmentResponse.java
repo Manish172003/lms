@@ -10,14 +10,36 @@ public class AssignmentResponse {
 	private Long sectionId;
 	private String sectionName;
 	private String courseName;
+	private Long facultyId;
+	private String facultyName;
 
 	public AssignmentResponse() {
 		super();
-		// TODO Auto-generated constructor stub
+	}
+    
+
+	public Long getFacultyId() {
+		return facultyId;
 	}
 
+
+	public void setFacultyId(Long facultyId) {
+		this.facultyId = facultyId;
+	}
+
+
+	public String getFacultyName() {
+		return facultyName;
+	}
+
+
+	public void setFacultyName(String facultyName) {
+		this.facultyName = facultyName;
+	}
+
+
 	public AssignmentResponse(Long id, String title, String description, LocalDate dueDate, Long sectionId,
-			String sectionName, String courseName) {
+			String sectionName, String courseName, Long facultyId, String facultyName) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -26,7 +48,10 @@ public class AssignmentResponse {
 		this.sectionId = sectionId;
 		this.sectionName = sectionName;
 		this.courseName = courseName;
+		this.facultyId = facultyId;
+		this.facultyName = facultyName;
 	}
+
 
 	public Long getId() {
 		return id;

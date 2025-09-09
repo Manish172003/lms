@@ -11,9 +11,10 @@ public class SectionResponse {
 	private Long facultyId;
 	private String facultyName;
 
+
 	public SectionResponse() {
 		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public SectionResponse(Long id, String sectionName, int capacity, int enrolledCount, Long courseId,

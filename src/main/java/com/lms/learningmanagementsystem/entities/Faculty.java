@@ -1,5 +1,6 @@
 package com.lms.learningmanagementsystem.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -14,7 +15,7 @@ public class Faculty {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long employeeId;
+	private Long facultyId;
 	private String name;
 	private String email;
 	private String department;
@@ -23,6 +24,21 @@ public class Faculty {
 	
 	@OneToMany(mappedBy = "faculty", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Section> sections;
+	
+    @OneToMany(mappedBy = "faculty")
+    private List<Assignment> assignments = new ArrayList<>();
+
+	public List<Assignment> getAssignments() {
+		return assignments;
+	}
+
+	public void setAssignments(List<Assignment> assignments) {
+		this.assignments = assignments;
+	}
+
+	public void setFacultyId(Long facultyId) {
+		this.facultyId = facultyId;
+	}
 
 	public List<Section> getSections() {
 		return sections;
@@ -36,13 +52,26 @@ public class Faculty {
 
 	}
 
-	public Faculty(long employeeId,String name, String email, String department, String designation,
+	public Faculty(Long facultyId, String name, String email, String department, String designation,
+			String specialization, List<Section> sections, List<Assignment> assignments) {
+		super();
+		this.facultyId = facultyId;
+		this.name = name;
+		this.email = email;
+		this.department = department;
+		this.designation = designation;
+		this.specialization = specialization;
+		this.sections = sections;
+		this.assignments = assignments;
+	}
+
+	public Faculty(long facultyId,String name, String email, String department, String designation,
 			String specialization) {
 		super();
 		
 		this.name = name;
 		this.email = email;
-		this.employeeId = employeeId;
+		this.facultyId = facultyId;
 		this.department = department;
 		this.designation = designation;
 		this.specialization = specialization;
@@ -77,12 +106,12 @@ public class Faculty {
 		this.email = email;
 	}
 
-	public Long getEmployeeId() {
-		return employeeId;
+	public Long getFacultyId() {
+		return facultyId;
 	}
 
-	public void setEmployeeId(Long employeeId) {
-		this.employeeId = employeeId;
+	public void setEmployeeId(Long facultyId) {
+		this.facultyId = facultyId;
 	}
 
 	public String getDepartment() {

@@ -3,7 +3,6 @@ package com.lms.learningmanagementsystem.dtos;
 public class FacultyRequest {
 	private String name;
 	private String email;
-	private String employeeId;
 	private String department;
 	private String designation;
 	private String specialization;
@@ -35,14 +34,6 @@ public class FacultyRequest {
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	public String getEmployeeId() {
-		return employeeId;
-	}
-
-	public void setEmployeeId(String employeeId) {
-		this.employeeId = employeeId;
 	}
 
 	public String getDepartment() {

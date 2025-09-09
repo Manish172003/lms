@@ -14,6 +14,7 @@ import com.lms.learningmanagementsystem.entities.Course;
 import com.lms.learningmanagementsystem.entities.Section;
 import com.lms.learningmanagementsystem.exception.ResourceNotFoundException;
 import com.lms.learningmanagementsystem.repositories.CourseRepository;
+import com.lms.learningmanagementsystem.repositories.SectionRepository;
 import com.lms.learningmanagementsystem.services.CourseService;
 
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,11 @@ public class CourseServiceImpl implements CourseService {
 
 	@Autowired
     private  CourseRepository courseRepository;
+	
+	@Autowired
+    private  SectionRepository sectionRepository;
+	
+	
 
     @Override
     public CourseResponse createCourse(CourseRequest request) {
@@ -90,9 +96,10 @@ public class CourseServiceImpl implements CourseService {
                 sr.setSectionName(section.getSectionName());
                 sr.setCapacity(section.getCapacity());
                 if (section.getFaculty() != null) {
-                    sr.setFacultyId(section.getFaculty().getEmployeeId());
+                    sr.setFacultyId(section.getFaculty().getFacultyId());
                     sr.setFacultyName(section.getFaculty().getName());
                 }
+               
                 return sr;
             }).collect(Collectors.toList());
 

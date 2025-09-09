@@ -2,6 +2,9 @@ package com.lms.learningmanagementsystem.dtos;
 
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import lombok.*;
 
 @Getter
@@ -16,8 +19,21 @@ public class StudentResponse {
     private String rollNumber;
 	private Double cgpa;
     private String department;
+    private List<SectionResponse> sections = new ArrayList<>();
     
-    public StudentResponse(Long id, String name, String email, String rollNumber, Double cgpa, String department) {
+ 
+
+
+	public List<SectionResponse> getSections() {
+		return sections;
+	}
+
+	public void setSections(List<SectionResponse> sections) {
+		this.sections = sections;
+	}
+
+	public StudentResponse(Long id, String name, String email, String rollNumber, Double cgpa, String department,
+			List<SectionResponse> sections) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -25,6 +41,21 @@ public class StudentResponse {
 		this.rollNumber = rollNumber;
 		this.cgpa = cgpa;
 		this.department = department;
+		this.sections = sections;
+	}
+
+	public StudentResponse(Long id, String name, String email, String rollNumber, Double cgpa, String department) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.email = email;
+		this.rollNumber = rollNumber;
+		this.cgpa = cgpa;
+		this.department = department;
+	}
+
+	public StudentResponse() {
+		// TODO Auto-generated constructor stub
 	}
 
 	public Long getId() {

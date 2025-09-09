@@ -103,7 +103,7 @@ public class SectionServiceImpl implements SectionService {
 		}
 
 		if (section.getFaculty() != null) {
-			response.setFacultyId(section.getFaculty().getEmployeeId());
+			response.setFacultyId(section.getFaculty().getFacultyId());
 			response.setFacultyName(section.getFaculty().getName());
 		}
 

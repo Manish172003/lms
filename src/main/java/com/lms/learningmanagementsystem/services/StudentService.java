@@ -3,6 +3,7 @@ package com.lms.learningmanagementsystem.services;
 
 import java.util.List;
 
+import com.lms.learningmanagementsystem.dtos.SectionResponse;
 import com.lms.learningmanagementsystem.dtos.StudentRequest;
 import com.lms.learningmanagementsystem.dtos.StudentResponse;
 
@@ -12,5 +13,8 @@ public interface StudentService {
     List<StudentResponse> getAllStudents();
     StudentResponse updateStudent(Long id, StudentRequest request);
     void deleteStudent(Long id);
+    public StudentResponse addStudentToSection(Long studentId,Long sectionId);
+    public List<SectionResponse> getSectionsByStudentId(Long studentId);
+    
 }
 

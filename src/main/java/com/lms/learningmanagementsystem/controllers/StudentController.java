@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.lms.learningmanagementsystem.dtos.SectionResponse;
 import com.lms.learningmanagementsystem.dtos.StudentRequest;
 import com.lms.learningmanagementsystem.dtos.StudentResponse;
 import com.lms.learningmanagementsystem.services.StudentService;
@@ -25,7 +26,17 @@ public class StudentController {
     public ResponseEntity<StudentResponse> createStudent(@RequestBody StudentRequest request) {
         return ResponseEntity.ok(studentService.createStudent(request));
     }
-
+    
+    @GetMapping("/{studentId}/sections")
+    public ResponseEntity<List<SectionResponse>> getSectionsByStudentId(@PathVariable("studentId") Long studentId) {
+        return ResponseEntity.ok(studentService.getSectionsByStudentId(studentId));
+    }
+    
+    @PostMapping("/{studentId}/{sectionId}")
+    public ResponseEntity<StudentResponse> addStudentToSection(@PathVariable("studentId") Long studentId,@PathVariable("sectionId") Long sectionId)
+    {
+    	return ResponseEntity.ok(studentService.addStudentToSection(studentId, sectionId));
+    }
     @GetMapping("/{id}")
     public ResponseEntity<StudentResponse> getStudentById(@PathVariable Long id) {
         return ResponseEntity.ok(studentService.getStudentById(id));

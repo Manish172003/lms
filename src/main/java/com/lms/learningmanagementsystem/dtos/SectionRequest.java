@@ -8,7 +8,6 @@ public class SectionRequest {
 
 	public SectionRequest() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public SectionRequest(String sectionName, int capacity, Long courseId, Long facultyId) {
