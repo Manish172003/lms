@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.lms.learningmanagementsystem.dtos.AssignmentResponse;
 import com.lms.learningmanagementsystem.dtos.CourseResponse;
 import com.lms.learningmanagementsystem.dtos.FacultyRequest;
 import com.lms.learningmanagementsystem.dtos.FacultyResponse;
@@ -21,99 +22,105 @@ import com.lms.learningmanagementsystem.services.FacultyService;
 public class FacultyServiceImpl implements FacultyService {
 
 	@Autowired
-    private FacultyRepository facultyRepository;
-	
+	private FacultyRepository facultyRepository;
+
 	@Autowired
-    private SectionRepository sectionRepository;
+	private SectionRepository sectionRepository;
 
-    @Override
-    public FacultyResponse createFaculty(FacultyRequest request) {
-        Faculty faculty = mapToEntity(request);
-        Faculty saved = facultyRepository.save(faculty);
-        return mapToResponse(saved);
-    }
+	@Override
+	public FacultyResponse createFaculty(FacultyRequest request) {
+		Faculty faculty = mapToEntity(request);
+		Faculty saved = facultyRepository.save(faculty);
+		return mapToResponse(saved);
+	}
 
-    @Override
-    public FacultyResponse getFacultyById(Long id) {
-        Faculty faculty = facultyRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Faculty not found with id: " + id));
-        return mapToResponse(faculty);
-    }
+	@Override
+	public FacultyResponse getFacultyById(Long id) {
+		Faculty faculty = facultyRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Faculty not found with id: " + id));
+		return mapToResponse(faculty);
+	}
 
-    @Override
-    public List<FacultyResponse> getAllFaculty() {
-        return facultyRepository.findAll()
-                .stream()
-                .map(this::mapToResponse)
-                .collect(Collectors.toList());
-    }
+	@Override
+	public List<FacultyResponse> getAllFaculty() {
+		return facultyRepository.findAll().stream().map(this::mapToResponse).collect(Collectors.toList());
+	}
 
-    @Override
-    public FacultyResponse updateFaculty(Long id, FacultyRequest request) {
-        Faculty faculty = facultyRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Faculty not found with id: " + id));
+	@Override
+	public FacultyResponse updateFaculty(Long id, FacultyRequest request) {
+		Faculty faculty = facultyRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Faculty not found with id: " + id));
 
-        faculty.setName(request.getName());
-        faculty.setEmail(request.getEmail());
-        faculty.setDepartment(request.getDepartment());
-        faculty.setDesignation(request.getDesignation());
-        faculty.setSpecialization(request.getSpecialization());
+		faculty.setName(request.getName());
+		faculty.setEmail(request.getEmail());
+		faculty.setDepartment(request.getDepartment());
+		faculty.setDesignation(request.getDesignation());
+		faculty.setSpecialization(request.getSpecialization());
 
-        Faculty updated = facultyRepository.save(faculty);
-        return mapToResponse(updated);
-    }
+		Faculty updated = facultyRepository.save(faculty);
+		return mapToResponse(updated);
+	}
 
-    @Override
-    public void deleteFaculty(Long id) {
-        Faculty faculty = facultyRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Faculty not found with id: " + id));
-        facultyRepository.delete(faculty);
-    }
+	@Override
+	public void deleteFaculty(Long id) {
+		Faculty faculty = facultyRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Faculty not found with id: " + id));
+		facultyRepository.delete(faculty);
+	}
 
+	private Faculty mapToEntity(FacultyRequest request) {
+		return new Faculty(request.getName(), request.getEmail(), request.getDepartment(), request.getDesignation(),
+				request.getSpecialization());
+	}
 
-    private Faculty mapToEntity(FacultyRequest request) {
-        return new Faculty(
-                request.getName(),
-                request.getEmail(),
-                request.getDepartment(),
-                request.getDesignation(),
-                request.getSpecialization()
-        );
-    }
-    
-    
-    private FacultyResponse mapToResponse(Faculty faculty) {
-       FacultyResponse response = new FacultyResponse();
-       response.setDepartment(faculty.getDepartment());
-       response.setDesignation(faculty.getDesignation());
-       response.setEmail(faculty.getEmail());
-       response.setName(faculty.getName());
-       response.setSpecialization(faculty.getSpecialization());
-       response.setEmployeeId(faculty.getFacultyId());
-       
-       if (faculty.getSections() != null) {
-           List<SectionResponse> sectionResponses = faculty.getSections().stream().map(section -> {
-               SectionResponse sr = new SectionResponse();
-               sr.setId(section.getId());
-               sr.setSectionName(section.getSectionName());
-               sr.setCapacity(section.getCapacity());
-               if (section.getFaculty() != null) {
-                   sr.setFacultyId(section.getFaculty().getFacultyId());
-                   sr.setFacultyName(section.getFaculty().getName());
-               }
-               if (section.getCourse() != null) {
-    	   
-                   sr.setCourseId(section.getCourse().getId());
-                   sr.setCourseName(section.getCourse().getName());
-               }
-               return sr;
-           }).collect(Collectors.toList());
+	private FacultyResponse mapToResponse(Faculty faculty) {
+		FacultyResponse response = new FacultyResponse();
+		response.setDepartment(faculty.getDepartment());
+		response.setDesignation(faculty.getDesignation());
+		response.setEmail(faculty.getEmail());
+		response.setName(faculty.getName());
+		response.setSpecialization(faculty.getSpecialization());
+		response.setEmployeeId(faculty.getFacultyId());
 
-           response.setSections(sectionResponses);
-       }
-       
-       return response;
-       
-    }
+		if (faculty.getSections() != null) {
+			List<SectionResponse> sectionResponses = faculty.getSections().stream().map(section -> {
+				SectionResponse sr = new SectionResponse();
+				sr.setId(section.getId());
+				sr.setSectionName(section.getSectionName());
+				sr.setCapacity(section.getCapacity());
+				if (section.getFaculty() != null) {
+					sr.setFacultyId(section.getFaculty().getFacultyId());
+					sr.setFacultyName(section.getFaculty().getName());
+				}
+				if (section.getCourse() != null) {
+
+					sr.setCourseId(section.getCourse().getId());
+					sr.setCourseName(section.getCourse().getName());
+				}
+
+				if (section.getAssignments() != null) {
+					List<AssignmentResponse> assignmentResponses = section.getAssignments().stream().map(assignment -> {
+						AssignmentResponse ar = new AssignmentResponse();
+						ar.setId(assignment.getId());
+						ar.setTitle(assignment.getTitle());
+						ar.setDescription(assignment.getDescription());
+						ar.setDueDate(assignment.getDueDate());
+
+						return ar;
+					}).collect(Collectors.toList());
+
+					sr.setAssignments(assignmentResponses);
+				}
+
+				return sr;
+
+			}).collect(Collectors.toList());
+
+			response.setSections(sectionResponses);
+		}
+
+		return response;
+
+	}
 
 }

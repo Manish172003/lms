@@ -99,6 +99,10 @@ public class CourseServiceImpl implements CourseService {
                     sr.setFacultyId(section.getFaculty().getFacultyId());
                     sr.setFacultyName(section.getFaculty().getName());
                 }
+                if (section.getCourse() != null) {
+                    sr.setCourseId(section.getCourse().getId());
+                    sr.setCourseName(section.getCourse().getName());
+                }
                
                 return sr;
             }).collect(Collectors.toList());

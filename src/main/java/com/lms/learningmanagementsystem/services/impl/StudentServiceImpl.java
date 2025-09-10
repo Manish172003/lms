@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.lms.learningmanagementsystem.dtos.StudentRequest;
 import com.lms.learningmanagementsystem.dtos.StudentResponse;
+import com.lms.learningmanagementsystem.dtos.AssignmentResponse;
 import com.lms.learningmanagementsystem.dtos.SectionResponse;
 import com.lms.learningmanagementsystem.entities.Student;
 import com.lms.learningmanagementsystem.entities.Section;
@@ -164,16 +165,39 @@ public class StudentServiceImpl implements StudentService {
                 sr.setId(section.getId());
                 sr.setSectionName(section.getSectionName());
                 sr.setCapacity(section.getCapacity());
+
                 if (section.getFaculty() != null) {
                     sr.setFacultyId(section.getFaculty().getFacultyId());
                     sr.setFacultyName(section.getFaculty().getName());
                 }
+
+                if (section.getCourse() != null) {
+                    sr.setCourseId(section.getCourse().getId());
+                    sr.setCourseName(section.getCourse().getName());
+                }
+
+                if (section.getAssignments() != null) {
+                    List<AssignmentResponse> assignmentResponses = section.getAssignments().stream().map(assignment -> {
+                        AssignmentResponse ar = new AssignmentResponse();
+                        ar.setId(assignment.getId());
+                        ar.setTitle(assignment.getTitle());
+                        ar.setDescription(assignment.getDescription());
+                        ar.setDueDate(assignment.getDueDate());
+                        
+                        return ar;
+                    }).collect(Collectors.toList());
+
+                    sr.setAssignments(assignmentResponses);
+                }
+
                 return sr;
             }).collect(Collectors.toList());
 
             response.setSections(sectionResponses);
+ 
         }
 
         return response;
     }
+
 }

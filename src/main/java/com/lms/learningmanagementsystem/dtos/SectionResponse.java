@@ -1,5 +1,11 @@
 package com.lms.learningmanagementsystem.dtos;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.lms.learningmanagementsystem.entities.Assignment;
+
+
 public class SectionResponse {
 
 	private Long id;
@@ -10,7 +16,43 @@ public class SectionResponse {
 	private String courseName;
 	private Long facultyId;
 	private String facultyName;
+	private List<AssignmentResponse> assignments = new ArrayList<>();
+	public SectionResponse(Long id, String sectionName, int capacity, int enrolledCount, Long courseId,
+			String courseName, Long facultyId, String facultyName, List<AssignmentResponse> assignments
+			) {
+		super();
+		this.id = id;
+		this.sectionName = sectionName;
+		this.capacity = capacity;
+		this.enrolledCount = enrolledCount;
+		this.courseId = courseId;
+		this.courseName = courseName;
+		this.facultyId = facultyId;
+		this.facultyName = facultyName;
+		this.assignments = assignments;
+	}
 
+	public List<AssignmentResponse> getAssignments() {
+		return assignments;
+	}
+
+	public void setAssignments(List<AssignmentResponse> assignments) {
+		this.assignments = assignments;
+	}
+
+
+	public SectionResponse(Long id, String sectionName, int capacity, int enrolledCount, Long courseId,
+			String courseName, Long facultyId, String facultyName, Long assignmentId, String assignmentName) {
+		super();
+		this.id = id;
+		this.sectionName = sectionName;
+		this.capacity = capacity;
+		this.enrolledCount = enrolledCount;
+		this.courseId = courseId;
+		this.courseName = courseName;
+		this.facultyId = facultyId;
+		this.facultyName = facultyName;
+	}
 
 	public SectionResponse() {
 		super();
